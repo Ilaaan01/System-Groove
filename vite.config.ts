@@ -1,5 +1,4 @@
 import { sites } from '@openai/sites-vite-plugin';
-import tailwindcss from '@tailwindcss/postcss';
 import vinext from 'vinext';
 import { defineConfig } from 'vite';
 import hostingConfig from './.openai/hosting.json';
@@ -11,6 +10,9 @@ const { d1, r2 } = hostingConfig;
 
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
 const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === 'seatbelt';
+
+// Vercel sets this in every build and runtime environment it controls.
+const isVercel = !!process.env.VERCEL;
 
 const localBindingConfig = {
   main: 'vinext/server/app-router-entry',
@@ -35,6 +37,18 @@ const localBindingConfig = {
 };
 
 export default defineConfig(async () => {
+  const sharedPlugins = [vinext(), sites()];
+
+  if (isVercel) {
+    // Vercel doesn't run on Cloudflare Workers, so the native Cloudflare
+    // plugin doesn't apply here. Nitro's Vercel preset auto-detects Vercel's
+    // CI environment and produces a compatible `.output/` build instead.
+    const { nitro } = await import('nitro/vite');
+    return {
+      plugins: [...sharedPlugins, nitro()],
+    };
+  }
+
   // Keep Wrangler and Miniflare state project-local. These are non-secret tool
   // settings; application environment belongs in ignored `.env*` files.
   process.env.WRANGLER_WRITE_LOGS ??= 'false';
@@ -45,13 +59,11 @@ export default defineConfig(async () => {
   const { cloudflare } = await import('@cloudflare/vite-plugin');
 
   return {
-    css: { postcss: { plugins: [tailwindcss()] } },
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,
     plugins: [
-      vinext(),
-      sites(),
+      ...sharedPlugins,
       cloudflare({
         viteEnvironment: { name: 'rsc', childEnvironments: ['ssr'] },
         config: localBindingConfig,
