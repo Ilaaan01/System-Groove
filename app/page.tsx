@@ -1,3 +1,6 @@
+import SiteNav from "./site-nav";
+import SiteFooter from "./site-footer";
+
 const services = [
   {
     number: "01",
@@ -90,24 +93,13 @@ const faqSchema = {
 export default function Home() {
   return (
     <main>
+      <a href="#main-content" className="skip-link">Skip to content</a>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
-      <nav className="nav shell" aria-label="Main navigation">
-        <a className="brand" href="#top" aria-label="System Groove home">
-          <span className="brand-mark">SG</span>
-          <span>system/groove</span>
-        </a>
-        <div className="nav-links">
-          <a href="#services">Services</a>
-          <a href="#approach">Approach</a>
-          <a href="#about">About</a>
-          <a href="https://app.systemgroove.com">Client login</a>
-        </div>
-        <a className="button button-small" href="#contact">Start a project <span>↗</span></a>
-      </nav>
+      <SiteNav />
 
-      <section className="hero shell" id="top">
+      <section className="hero shell" id="main-content">
         <div className="hero-orbit" aria-hidden="true"><span>SG</span></div>
         <p className="eyebrow"><span className="pulse" /> Charlotte, NC · Working with growing businesses everywhere</p>
         <h1>Build what’s next.<br /><em>Be found everywhere.</em></h1>
@@ -143,7 +135,6 @@ export default function Home() {
               <span className="service-number">{service.number}</span>
               <div className="service-main"><h3>{service.title}</h3><p>{service.copy}</p></div>
               <div className="service-meta"><span className="service-tag">{service.tag}</span><ul>{service.points.map((point) => <li key={point}>{point}</li>)}</ul></div>
-              <span className="service-arrow" aria-hidden="true">↗</span>
             </article>
           ))}
         </div>
@@ -152,10 +143,13 @@ export default function Home() {
       <section className="ai-section" id="about">
         <div className="shell ai-grid">
           <div className="ai-visual" aria-hidden="true">
-            <div className="search-pill">Who’s the best fit for my project?<span>↗</span></div>
-            <div className="signal signal-one">TECHNICAL SEO</div>
-            <div className="signal signal-two">TRUSTED CITATIONS</div>
-            <div className="signal signal-three">ANSWER-READY CONTENT</div>
+            <p className="ai-query-label">Someone asks</p>
+            <p className="ai-query">“Who’s the best fit for my project?”</p>
+            <div className="ai-track">
+              <div className="ai-node"><i />TECHNICAL SEO</div>
+              <div className="ai-node"><i />TRUSTED CITATIONS</div>
+              <div className="ai-node"><i />ANSWER-READY CONTENT</div>
+            </div>
             <div className="answer-card"><span>AI ANSWER</span><strong>Brands become visible when their expertise is clear, structured, and trusted.</strong></div>
           </div>
           <div className="ai-copy">
@@ -195,7 +189,7 @@ export default function Home() {
       <section className="faq shell">
         <div className="faq-heading"><p className="kicker">Good questions</p><h2>Before we start.</h2><p>Clear answers, no inflated promises.</p></div>
         <div className="faq-list">
-          {faqs.map((item, index) => <details key={item.q} open={index === 0}><summary><span>{String(index + 1).padStart(2, "0")}</span>{item.q}<i>+</i></summary><p>{item.a}</p></details>)}
+          {faqs.map((item, index) => <details key={item.q} open={index === 0}><summary><span>{String(index + 1).padStart(2, "0")}</span>{item.q}<i aria-hidden="true">+</i></summary><p>{item.a}</p></details>)}
         </div>
       </section>
 
@@ -212,15 +206,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer>
-        <div className="shell footer-grid">
-          <div><a className="brand footer-brand" href="#top"><span className="brand-mark">SG</span><span>system/groove</span></a><p>Websites, software, apps, search, and automation—built to work together.</p></div>
-          <div><span className="footer-label">Explore</span><a href="#services">Services</a><a href="#approach">Approach</a><a href="#work">Experience</a><a href="https://app.systemgroove.com">Client login</a></div>
-          <div><span className="footer-label">Connect</span><a href="mailto:contact@systemgroove.com">Email</a><a href="https://www.facebook.com/SystemGroove1">Facebook</a><a href="https://instagram.com/systemgroove_">Instagram</a></div>
-          <div><span className="footer-label">Charlotte, NC</span><p>1235 East Blvd #E-2094<br />Charlotte, NC 28203</p><a href="tel:+19803032697">(980) 303-2697</a></div>
-        </div>
-        <div className="shell footer-bottom"><span>© {new Date().getFullYear()} System Groove</span><span>Strategy / Design / Engineering / Growth</span></div>
-      </footer>
+      <SiteFooter />
     </main>
   );
 }
