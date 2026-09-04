@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import HashLink from "./hash-link";
+
+const NAV_PANEL_ID = "site-nav-panel";
 
 export default function SiteNav() {
   const [open, setOpen] = useState(false);
-  const panelId = useId();
   const toggleRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
@@ -24,6 +26,14 @@ export default function SiteNav() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!window.location.hash) return;
+    const target = document.getElementById(window.location.hash.slice(1));
+    // "instant" avoids fighting the page's global scroll-behavior:smooth,
+    // which otherwise leaves an initial-load anchor scroll stuck near the top.
+    target?.scrollIntoView({ behavior: "instant" });
   }, []);
 
   useEffect(() => {
@@ -79,38 +89,38 @@ export default function SiteNav() {
           <span>system/groove</span>
         </Link>
         <div className="nav-links">
-          <Link href="/#services">Services</Link>
-          <Link href="/#approach">Approach</Link>
-          <Link href="/#about">About</Link>
+          <HashLink href="/#services">Services</HashLink>
+          <HashLink href="/#approach">Approach</HashLink>
+          <HashLink href="/#about">About</HashLink>
           <Link href="/case-studies" className={isCaseStudies ? "active" : undefined} aria-current={isCaseStudies ? "page" : undefined}>Case Studies</Link>
           <a href="https://app.systemgroove.com">Client login</a>
         </div>
-        <Link className="button button-small" href="/#contact">
+        <HashLink className="button button-small" href="/#contact">
           Start a project <span>↗</span>
-        </Link>
+        </HashLink>
         <button
           ref={toggleRef}
           type="button"
           className="nav-toggle"
           aria-expanded={open}
-          aria-controls={panelId}
+          aria-controls={NAV_PANEL_ID}
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((value) => !value)}
         >
           <span className="nav-toggle-bars" aria-hidden="true" />
         </button>
       </div>
-      <div id={panelId} ref={panelRef} className={open ? "nav-panel nav-panel-open" : "nav-panel"}>
+      <div id={NAV_PANEL_ID} ref={panelRef} className={open ? "nav-panel nav-panel-open" : "nav-panel"}>
         <div className="nav-panel-links">
-          <Link href="/#services" onClick={closeMenu}>Services</Link>
-          <Link href="/#approach" onClick={closeMenu}>Approach</Link>
-          <Link href="/#about" onClick={closeMenu}>About</Link>
+          <HashLink href="/#services" onClick={closeMenu}>Services</HashLink>
+          <HashLink href="/#approach" onClick={closeMenu}>Approach</HashLink>
+          <HashLink href="/#about" onClick={closeMenu}>About</HashLink>
           <Link href="/case-studies" className={isCaseStudies ? "active" : undefined} aria-current={isCaseStudies ? "page" : undefined} onClick={closeMenu}>Case Studies</Link>
           <a href="https://app.systemgroove.com" onClick={closeMenu}>Client login</a>
         </div>
-        <Link className="button nav-panel-cta" href="/#contact" onClick={closeMenu}>
+        <HashLink className="button nav-panel-cta" href="/#contact" onClick={closeMenu}>
           Start a project <span>↗</span>
-        </Link>
+        </HashLink>
       </div>
     </nav>
   );

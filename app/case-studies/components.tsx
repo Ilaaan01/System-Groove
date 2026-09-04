@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HashLink from "../hash-link";
 import type { CaseStudy } from "./data";
 
 export function Breadcrumb({ client }: { client?: string }) {
@@ -273,9 +274,9 @@ export function CaseStudyFinalCta() {
         </h2>
         <p>Bring us the goal, the bottleneck, or even the messy first idea. We’ll help you identify the smartest next step.</p>
         <div className="contact-actions">
-          <Link className="button button-lime" href="/#contact">
+          <HashLink className="button button-lime" href="/#contact">
             Talk to us about your growth system <span>↗</span>
-          </Link>
+          </HashLink>
           <a className="contact-phone" href="tel:+19803032697">
             (980) 303-2697
           </a>

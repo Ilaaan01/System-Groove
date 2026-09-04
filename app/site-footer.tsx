@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HashLink from "./hash-link";
 
 export default function SiteFooter() {
   return (
@@ -10,9 +11,9 @@ export default function SiteFooter() {
         </div>
         <div>
           <span className="footer-label">Explore</span>
-          <Link href="/#services">Services</Link>
-          <Link href="/#approach">Approach</Link>
-          <Link href="/#work">Experience</Link>
+          <HashLink href="/#services">Services</HashLink>
+          <HashLink href="/#approach">Approach</HashLink>
+          <HashLink href="/#work">Experience</HashLink>
           <Link href="/case-studies">Case Studies</Link>
           <a href="https://app.systemgroove.com">Client login</a>
         </div>
