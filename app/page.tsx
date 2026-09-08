@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HashLink from "./hash-link";
 import { JsonLd } from "@/components/json-ld";
 import { CaseStudyCard } from "@/components/case-study-card";
 import { FitSection } from "@/components/fit-section";
@@ -50,7 +51,7 @@ export default function Home() {
               <p className="map-caption"><span aria-hidden="true">↻</span> One strategy. Every part working together.</p>
             </div>
           </div>
-          <div className="hero-disciplines"><span>Strategy</span><i aria-hidden="true">/</i><span>Design</span><i aria-hidden="true">/</i><span>Engineering</span><i aria-hidden="true">/</i><span>Growth</span><a href="#services">Explore our capabilities <span aria-hidden="true">↓</span></a></div>
+          <div className="hero-disciplines"><span>Strategy</span><i aria-hidden="true">/</i><span>Design</span><i aria-hidden="true">/</i><span>Engineering</span><i aria-hidden="true">/</i><span>Growth</span><HashLink href="/#services">Explore our capabilities <span aria-hidden="true">↓</span></HashLink></div>
         </div>
       </section>
 

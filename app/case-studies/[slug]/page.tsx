@@ -1,178 +1,193 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Breadcrumbs } from "@/components/breadcrumbs";
-import { CaseStudyCard } from "@/components/case-study-card";
-import { JsonLd } from "@/components/json-ld";
-import { OG_IMAGE } from "@/lib/constants";
-import { caseStudies, getCaseStudyBySlug, type CaseStudy } from "@/lib/content/case-studies";
-import { getServiceBySlug, type Service } from "@/lib/content/services";
-import { buildCreativeWorkSchema } from "@/lib/schema";
-
-interface CaseStudyPageProps {
-  params: Promise<{ slug: string }>;
-}
+import { caseStudies, getCaseStudyBySlug } from "../data";
+import {
+  Breadcrumb,
+  HeroMetrics,
+  BulletBlock,
+  Timeline,
+  HowItWorked,
+  BeforeAfter,
+  TestimonialBlock,
+  CreativeLearning,
+  Specifications,
+  ServicesInvolved,
+  DataBoundaryPanel,
+  PrevNextNav,
+  CaseStudyFinalCta,
+} from "../components";
 
 export function generateStaticParams() {
-  return caseStudies.map((cs) => ({ slug: cs.slug }));
+  return caseStudies.map((study) => ({ slug: study.slug }));
 }
 
-export const dynamicParams = false;
-
-export async function generateMetadata({ params }: CaseStudyPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const caseStudy = getCaseStudyBySlug(slug);
-  if (!caseStudy) return {};
-  const title = `${caseStudy.title} | Case Study`;
+  const study = getCaseStudyBySlug(slug);
+  if (!study) {
+    return {
+      title: "Case study not found",
+      robots: { index: false, follow: false },
+    };
+  }
+
   return {
-    title,
-    description: caseStudy.metaDescription,
-    alternates: { canonical: `/case-studies/${caseStudy.slug}` },
-    openGraph: { url: `/case-studies/${caseStudy.slug}`, title, description: caseStudy.metaDescription, images: [OG_IMAGE] },
-    twitter: { title, description: caseStudy.metaDescription, images: [OG_IMAGE.url] },
+    title: study.seo.title,
+    description: study.seo.description,
+    alternates: { canonical: `/case-studies/${study.slug}` },
+    openGraph: {
+      type: "article",
+      url: `/case-studies/${study.slug}`,
+      siteName: "System Groove",
+      title: study.seo.title,
+      description: study.seo.description,
+      images: [{ url: "/og.png", width: 1731, height: 909, alt: study.seo.title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: study.seo.title,
+      description: study.seo.description,
+      images: ["/og.png"],
+    },
   };
 }
 
-export default async function CaseStudyPage({ params }: CaseStudyPageProps) {
+export default async function CaseStudyDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const caseStudy = getCaseStudyBySlug(slug);
-  if (!caseStudy) notFound();
+  const study = getCaseStudyBySlug(slug);
+  if (!study) notFound();
 
-  const relatedServices = caseStudy.relatedServiceSlugs
-    .map((s) => getServiceBySlug(s))
-    .filter((s): s is Service => s !== undefined);
-  const relatedCaseStudies = caseStudy.relatedCaseStudySlugs
-    .map((s) => getCaseStudyBySlug(s))
-    .filter((cs): cs is CaseStudy => cs !== undefined);
+  const index = caseStudies.findIndex((item) => item.slug === study.slug);
+  const prev = caseStudies[(index - 1 + caseStudies.length) % caseStudies.length];
+  const next = caseStudies[(index + 1) % caseStudies.length];
+
+  const creativeWorkSchema = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: study.seo.title,
+    about: study.client,
+    author: { "@type": "Organization", name: "System Groove" },
+    description: study.seo.description,
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.systemgroove.com/" },
+      { "@type": "ListItem", position: 2, name: "Case Studies", item: "https://www.systemgroove.com/case-studies" },
+      { "@type": "ListItem", position: 3, name: study.client, item: `https://www.systemgroove.com/case-studies/${study.slug}` },
+    ],
+  };
 
   return (
     <main id="main-content">
-      <JsonLd data={buildCreativeWorkSchema(caseStudy)} />
-      <Breadcrumbs
-        items={[
-          { name: "Home", path: "/" },
-          { name: "Case Studies", path: "/case-studies" },
-          { name: caseStudy.title, path: `/case-studies/${caseStudy.slug}` },
-        ]}
-      />
+      <a href="#main-content" className="skip-link">Skip to content</a>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
-      <section className="page-hero shell">
-        <p className="kicker">{caseStudy.industry} · {caseStudy.market}</p>
-        <h1>{caseStudy.title}</h1>
-        <p>{caseStudy.summary}</p>
-        <div className="case-study-detail-grid">
-          {caseStudy.results.map((metric) => (
-            <span key={metric.label} className="metric-badge">
-              <strong>{metric.value}</strong>
-              {metric.label}
-            </span>
-          ))}
+
+      <Breadcrumb client={study.client} />
+
+      <section className="cs-hero shell">
+        <p className="cs-hero-tag kicker">{study.category}</p>
+        <h1>{study.client}</h1>
+        <p className="cs-hero-summary">{study.summary}</p>
+        <div className="cs-hero-meta">
+          <span><strong>Industry</strong>{study.industry}</span>
+          <span><strong>Market</strong>{study.market}</span>
+          <span><strong>Duration</strong>{study.duration}</span>
+          <span><strong>Year</strong>{study.year}</span>
         </div>
       </section>
 
-      {caseStudy.heroImage && (
-        <section className="shell">
-          <div className="case-study-hero-image">
-            <Image src={caseStudy.heroImage.src} alt={caseStudy.heroImage.alt} fill sizes="(max-width: 768px) 100vw, 1240px" />
-          </div>
-        </section>
-      )}
-
-      <section className="shell" style={{ padding: "0 0 40px" }}>
-        <dl className="process-meta" style={{ gridTemplateColumns: "repeat(4,1fr)" }}>
-          <div><dt>Client</dt><dd>{caseStudy.client}</dd></div>
-          <div><dt>Industry</dt><dd>{caseStudy.industry}</dd></div>
-          <div><dt>Market</dt><dd>{caseStudy.market}</dd></div>
-          <div><dt>Duration</dt><dd>{caseStudy.duration}</dd></div>
-        </dl>
+      <section className="cs-metrics-section shell">
+        <HeroMetrics metrics={study.heroMetrics} />
       </section>
 
-      <section className="shell" style={{ padding: "0 0 40px" }}>
-        <h2 style={{ font: "600 32px var(--font-display)", letterSpacing: "-.03em" }}>The challenge</h2>
-        <p className="section-lede">{caseStudy.challenge}</p>
-      </section>
-
-      <section className="shell" style={{ padding: "0 0 40px" }}>
-        <h2 style={{ font: "600 32px var(--font-display)", letterSpacing: "-.03em" }}>How the system worked</h2>
-        <p className="section-lede">{caseStudy.systemMove}</p>
-      </section>
-
-      <section className="shell" style={{ padding: "0 0 40px" }}>
-        <h2 style={{ font: "600 32px var(--font-display)", letterSpacing: "-.03em" }}>Timeline</h2>
-        <ul className="timeline">
-          {caseStudy.timeline.map((entry) => (
-            <li key={entry.label}>
-              <span className="timeline-label">{entry.label}</span>
-              <p className="timeline-description">{entry.description}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {caseStudy.quote && (
-        <section className="shell" style={{ padding: "0 0 40px" }}>
-          <div className="quote-block">
-            <p>“{caseStudy.quote.text}”</p>
-            <cite>{caseStudy.quote.attribution}</cite>
-          </div>
-        </section>
-      )}
-
-      <section className="shell" style={{ padding: "0 0 40px" }}>
-        <h2 style={{ font: "600 32px var(--font-display)", letterSpacing: "-.03em" }}>Before and after</h2>
-        <div className="process-meta" style={{ gridTemplateColumns: "1fr 1fr", marginTop: 20 }}>
-          <div>
-            <dt>Before</dt>
-            <dd style={{ fontSize: 14, lineHeight: 1.6 }}>{caseStudy.beforeAfter.before}</dd>
-          </div>
-          <div>
-            <dt>After</dt>
-            <dd style={{ fontSize: 14, lineHeight: 1.6 }}>{caseStudy.beforeAfter.after}</dd>
-          </div>
+      <section className="cs-section shell">
+        <div className="cs-section-block">
+          <p className="kicker">The Challenge</p>
+          <p className="cs-prose">{study.challenge}</p>
+        </div>
+        <div className="cs-section-block">
+          <p className="kicker">The Move</p>
+          <BulletBlock intro={study.move.intro} points={study.move.points} closing={study.move.closing} />
         </div>
       </section>
 
-      <section className="shell" style={{ padding: "0 0 40px" }}>
-        <h2 style={{ font: "600 32px var(--font-display)", letterSpacing: "-.03em" }}>Strongest learning</h2>
-        <p className="section-lede">{caseStudy.learning}</p>
-      </section>
-
-      <section className="shell" style={{ padding: "0 0 40px" }}>
-        <div className="data-limitations">
-          <p><strong>Data limitations:</strong> {caseStudy.dataLimitations}</p>
+      <section className="cs-system-section">
+        <div className="shell">
+          <p className="kicker inverse">The System</p>
+          <BulletBlock intro={study.system.intro} points={study.system.points} />
         </div>
       </section>
 
-      {relatedServices.length > 0 && (
-        <section className="shell" style={{ padding: "0 0 40px" }}>
-          <p className="kicker">Related services</p>
-          <div className="related-grid">
-            {relatedServices.map((service) => (
-              <Link key={service.slug} className="related-link" href={`/services#${service.slug}`}>
-                {service.title}
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {relatedCaseStudies.length > 0 && (
-        <section className="shell" style={{ padding: "0 0 60px" }}>
-          <p className="kicker">Related case studies</p>
-          <div className="case-study-grid" style={{ marginTop: 20 }}>
-            {relatedCaseStudies.map((cs) => (
-              <CaseStudyCard key={cs.slug} caseStudy={cs} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      <section className="shell" style={{ padding: "0 0 120px" }}>
-        <Link className="button button-lime" href="/contact">
-          Start your project brief <span aria-hidden="true">↗</span>
-        </Link>
+      <section className="cs-timeline-section shell">
+        <div className="section-intro compact">
+          <p className="kicker">Campaign Timeline</p>
+          <h2>How it unfolded.</h2>
+        </div>
+        <Timeline steps={study.timeline} note={study.timelineNote} />
       </section>
+
+      <section className="cs-how-section shell">
+        <div className="section-intro compact">
+          <p className="kicker">How the system worked</p>
+          <h2>The system, in motion.</h2>
+        </div>
+        <HowItWorked items={study.howItWorked} />
+      </section>
+
+      <section className="cs-before-after-section shell">
+        <div className="section-intro compact">
+          <p className="kicker">Before / After</p>
+        </div>
+        <BeforeAfter before={study.before} after={study.after} />
+      </section>
+
+      <section className="cs-testimonial-section shell">
+        <TestimonialBlock testimonial={study.testimonial} />
+      </section>
+
+      <section className="cs-creative-section shell">
+        <div className="section-intro compact">
+          <p className="kicker">Creative-Performance Learning</p>
+          <h2>What the creative proved.</h2>
+        </div>
+        <CreativeLearning learning={study.specifications.creativeLearning} testing={study.creativeTesting} />
+      </section>
+
+      <section className="cs-specs-section shell">
+        <div className="section-intro compact">
+          <p className="kicker">System Specifications</p>
+          <h2>The specifics, spelled out.</h2>
+        </div>
+        <Specifications specifications={study.specifications} />
+      </section>
+
+      <section className="cs-services-section shell">
+        <div className="section-intro compact">
+          <p className="kicker">Services Involved</p>
+          <h2>Where the work happened.</h2>
+        </div>
+        <ServicesInvolved services={study.services} />
+      </section>
+
+      <section className="cs-boundary-section shell">
+        <div className="section-intro compact">
+          <p className="kicker">What We Can Verify</p>
+          <h2>Transparent by design.</h2>
+        </div>
+        <DataBoundaryPanel verified={study.dataBoundary.verified} notProvided={study.dataBoundary.notProvided} />
+      </section>
+
+      <CaseStudyFinalCta />
+
+      <section className="cs-prevnext-section shell">
+        <PrevNextNav prev={prev} next={next} />
+      </section>
+
     </main>
   );
 }
