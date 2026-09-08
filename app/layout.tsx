@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { DM_Sans, Space_Grotesk } from "next/font/google";
+import { Footer } from "@/components/footer";
+import { Nav } from "@/components/nav";
 import "./globals.css";
 
 const body = DM_Sans({ variable: "--font-body", subsets: ["latin"] });
@@ -8,33 +10,43 @@ const display = Space_Grotesk({ variable: "--font-display", subsets: ["latin"] }
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.systemgroove.com"),
   title: {
-    default: "System Groove | Websites, Software, Apps & SEO",
+    default: "System Groove | Growth Marketing & Digital Products for Local Service Businesses",
     template: "%s | System Groove",
   },
-  description: "System Groove builds modern websites, custom software, mobile apps, SEO campaigns, and AI search visibility for growing businesses.",
-  keywords: ["web design Charlotte NC", "custom software development", "mobile app development", "SEO services", "AI search optimization", "AEO", "GEO", "business automation"],
+  description: "System Groove runs Meta Ads, Google Ads, local visibility, and review systems for local service businesses—backed by ALCA Software for custom websites, software, and apps.",
+  keywords: ["Meta Ads for local businesses", "Google Ads local services", "Google Business Profile optimization", "local SEO Charlotte NC", "custom software development", "mobile app development", "AI search optimization", "AEO", "GEO", "business automation"],
   alternates: { canonical: "/" },
   category: "technology",
+  icons: { icon: "/favicon.svg" },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: "/",
     siteName: "System Groove",
     title: "System Groove | Build what’s next. Be found everywhere.",
-    description: "Websites, custom software, mobile apps, SEO, AI search optimization, and automation for growing businesses.",
+    description: "Meta Ads, Google Ads, local visibility, and review systems for local service businesses—backed by ALCA Software for websites, software, and apps.",
     images: [{ url: "/og.png", width: 1731, height: 909, alt: "System Groove — Build what’s next. Be found everywhere." }],
   },
   twitter: {
     card: "summary_large_image",
     title: "System Groove | Build what’s next. Be found everywhere.",
-    description: "Websites, custom software, mobile apps, SEO, AI search optimization, and automation for growing businesses.",
+    description: "Meta Ads, Google Ads, local visibility, and review systems for local service businesses—backed by ALCA Software for websites, software, and apps.",
     images: ["/og.png"],
   },
   robots: { index: true, follow: true },
 };
 
-export const viewport: Viewport = { themeColor: "#f1f0e8", colorScheme: "light" };
+export const viewport: Viewport = { themeColor: "#192e3d", colorScheme: "light" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><body className={`${body.variable} ${display.variable}`}>{children}</body></html>;
+  return (
+    <html lang="en">
+      <body className={`${body.variable} ${display.variable}`}>
+        <a className="skip-link" href="#main-content">Skip to content</a>
+        <Nav />
+        {children}
+        <Footer />
+      </body>
+    </html>
+  );
 }
