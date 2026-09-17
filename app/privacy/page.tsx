@@ -46,12 +46,26 @@ export default function PrivacyPage() {
           or call us directly, we receive whatever information you choose to share.
         </p>
 
-        <h2 style={{ font: "600 28px var(--font-display)", letterSpacing: "-.03em", marginTop: 40 }}>Automatically collected information</h2>
+        <h2 id="cookies" style={{ font: "600 28px var(--font-display)", letterSpacing: "-.03em", marginTop: 40 }}>Cookies and analytics</h2>
+        <p className="section-lede">
+          This website uses Google Tag Manager to load two analytics tools: Google Analytics and Microsoft Clarity.
+          They use cookies and similar technologies to measure how visitors use the site, such as pages viewed, how
+          people navigate and interact with pages, device and browser type, and approximate location. We use this
+          information to understand and improve the site. By continuing to use this website, you accept the use of
+          these cookies.
+        </p>
+        <p className="section-lede">
+          You can learn how these providers handle data in the{" "}
+          <a className="text-link" href="https://policies.google.com/privacy">Google Privacy Policy</a> and the{" "}
+          <a className="text-link" href="https://privacy.microsoft.com/privacystatement">Microsoft Privacy Statement</a>.
+          You can block or delete cookies in your browser settings, and you can opt out of Google Analytics with the{" "}
+          <a className="text-link" href="https://tools.google.com/dlpage/gaoptout">Google Analytics opt-out browser add-on</a>.
+          When you dismiss the cookie notice, your browser remembers that choice locally so the notice is not shown again.
+        </p>
         <div className="data-limitations">
           <p>
-            <strong>To be completed by legal/technical review.</strong> As of this draft, this website does not include
-            any analytics, advertising pixel, or cookie-based tracking script in its code. If that changes, this section
-            must be updated to accurately describe what is collected, by whom, and why before publishing.
+            <strong>To be completed by legal review.</strong> Retention settings for these tools and any region-specific
+            consent requirements have not yet been confirmed.
           </p>
         </div>
 
