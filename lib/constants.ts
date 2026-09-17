@@ -22,7 +22,10 @@ export const SOCIALS = {
 
 export const CLIENT_LOGIN_URL = "https://app.systemgroove.com";
 
-export const OG_IMAGE = { url: "/og.png", width: 1731, height: 909, alt: "System Groove — Build what’s next. Be found everywhere." };
+// Next replaces (not merges) a page's openGraph object, so subpages spread this to keep the layout's site-level OG tags.
+export const BASE_OPEN_GRAPH = { type: "website", siteName: ORG_NAME, locale: "en_US" } as const;
+
+export const OG_IMAGE ={ url: "/og.png", width: 1731, height: 909, alt: "System Groove — Build what’s next. Be found everywhere." };
 
 export const ORG_SERVICE_TYPES = [
   "Web design",

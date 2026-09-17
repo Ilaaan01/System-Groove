@@ -21,7 +21,7 @@ export interface CaseStudy {
   testimonial: { type: TestimonialType; quote?: string; attribution?: string; note: string };
   specifications: { objective: string; market: string; creativeLearning: string; dataBoundaryNote: string };
   creativeTesting?: { label: string; value: string; note?: string }[];
-  services: { title: string; body: string }[];
+  services: { title: string; body: string; href?: string }[];
   dataBoundary: { verified: string[]; notProvided: string[] };
   seo: { title: string; description: string };
 }
@@ -145,7 +145,7 @@ export const caseStudies: CaseStudy[] = [
       dataBoundaryNote: "This is a verified lead-generation case study. Verified reporting does not contain booked appointments, closed jobs, exact revenue, or ROAS.",
     },
     services: [
-      { title: "Meta Ads", body: "Campaign setup, targeting, creative testing, performance analysis and budget direction." },
+      { title: "Meta Ads", href: "/services/meta-ads", body: "Campaign setup, targeting, creative testing, performance analysis and budget direction." },
       { title: "Landing Page", body: "Quote-focused conversion path designed to turn paid traffic into flooring inquiries." },
       { title: "CRM Support", body: "Lead organization and follow-up support." },
     ],
@@ -261,7 +261,7 @@ export const caseStudies: CaseStudy[] = [
       dataBoundaryNote: "Verified reporting does not include booked estimates, closed jobs, exact revenue, an approved testimonial, or ROAS.",
     },
     services: [
-      { title: "Meta Ads", body: "Campaign setup, local targeting tests, creative analysis and lead-generation performance review." },
+      { title: "Meta Ads", href: "/services/meta-ads", body: "Campaign setup, local targeting tests, creative analysis and lead-generation performance review." },
       { title: "Landing Page", body: "Free-estimate conversion path using premium flooring visuals and a direct local-service CTA." },
       { title: "CRM Support", body: "Lead-generation support connected to the broader client setup without presenting unverified sales data as revenue results." },
     ],
@@ -399,7 +399,7 @@ export const caseStudies: CaseStudy[] = [
       { label: "Video 2", value: "$240.35 cost per result", note: "Weaker performer" },
     ],
     services: [
-      { title: "Meta Ads", body: "Campaign direction, creative analysis, performance tracking and budget guidance." },
+      { title: "Meta Ads", href: "/services/meta-ads", body: "Campaign direction, creative analysis, performance tracking and budget guidance." },
       { title: "Landing Page", body: "Conversion-path improvements for concrete quote requests and stronger lead information capture." },
       { title: "CRM Support", body: "Automation and pipeline visibility support once incoming lead flow began." },
     ],

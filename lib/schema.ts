@@ -2,6 +2,8 @@ import { ADDRESS, CONTACT_EMAIL, CONTACT_PHONE_E164, ORG_NAME, ORG_SERVICE_TYPES
 import type { CaseStudy } from "@/lib/content/case-studies";
 import type { Service } from "@/lib/content/services";
 
+const ORG_ID = `${SITE_URL}/#organization`;
+
 export interface FaqItem {
   q: string;
   a: string;
@@ -16,6 +18,7 @@ export function buildOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
+    "@id": ORG_ID,
     name: ORG_NAME,
     url: SITE_URL,
     email: CONTACT_EMAIL,
@@ -52,15 +55,18 @@ export function buildBreadcrumbSchema(items: BreadcrumbItem[]) {
 }
 
 export function buildServiceSchema(service: Service) {
+  const url = service.detailPath ? `${SITE_URL}${service.detailPath}` : `${SITE_URL}/services#${service.slug}`;
   return {
     "@context": "https://schema.org",
     "@type": "Service",
+    // Shared @id lets /services and a service's detail page describe the same entity.
+    "@id": service.detailPath ? `${url}#service` : url,
     name: service.title,
     description: service.description,
     serviceType: service.title,
     areaServed: "United States",
-    provider: { "@type": "ProfessionalService", name: ORG_NAME, url: SITE_URL },
-    url: `${SITE_URL}/services#${service.slug}`,
+    provider: { "@type": "ProfessionalService", "@id": ORG_ID, name: ORG_NAME, url: SITE_URL },
+    url,
   };
 }
 

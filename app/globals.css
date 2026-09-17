@@ -230,6 +230,9 @@ footer { background:#050605; color:var(--foreground); padding:80px 0 28px; }
 .fit-good .fit-label { background:var(--lime); border-color:var(--lime); }
 .fit-not .fit-label { color:var(--muted); }
 .fit-card p { margin:0; font-size:15px; line-height:1.65; color:var(--muted); }
+/* Meta Ads detail page (/services/meta-ads): reuses .fit-grid/.fit-card for a two-up deliverables/outcomes list. */
+.fit-card ul { margin:0; padding-left:18px; font-size:15px; line-height:1.65; color:var(--muted); }
+.fit-card li:not(:first-child) { margin-top:8px; }
 
 .brief-form { margin-top:50px; display:flex; flex-direction:column; gap:36px; }
 .form-fieldset { border:1px solid var(--line); padding:26px 28px; }
@@ -381,6 +384,7 @@ summary:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
 }
 
 /* Search discovery explorer */
+@media (min-width:981px) { .ai-grid-copy-first { grid-template-columns:.85fr 1.15fr; } }
 .search-explorer { min-width:0; padding:26px; border:1px solid #61717c; border-radius:20px; background:var(--navy); color:var(--foreground); box-shadow:0 24px 64px #00000020; }
 .explorer-heading { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:24px; }
 .explorer-label { font:500 16px var(--font-display),sans-serif; letter-spacing:-.02em; }
@@ -628,6 +632,8 @@ summary:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
 .cs-services-section { padding:0 0 120px; }
 .cs-services-list { border-top:1px solid var(--ink); }
 .cs-services-list .service-row { grid-template-columns:58px 1fr; }
+.cs-services-list h3 a { border-bottom:1px solid currentColor; }
+.cs-services-list h3 a:hover { border-bottom-color:var(--brand-orange); }
 
 .cs-boundary-section { padding:0 0 120px; }
 .cs-boundary { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--ink); border-bottom:1px solid var(--line); }

@@ -11,6 +11,8 @@ export interface Service {
   deliverables?: string[];
   outcomes?: string[];
   featured?: boolean;
+  /** Path to a dedicated, indexable detail page for this service, when one exists. */
+  detailPath?: string;
 }
 
 export interface ServicePillarGroup {
@@ -32,6 +34,7 @@ const growthServices: Service[] = [
     deliverables: ["Campaign strategy", "Audience targeting", "Campaign and ad-account setup", "Offer and message guidance", "Tracking and performance review", "Ongoing optimization"],
     outcomes: ["More consistent prospect awareness", "Better-quality traffic or lead volume", "Clearer campaign learnings", "Reduced wasted spend over time"],
     featured: true,
+    detailPath: "/services/meta-ads",
   },
   {
     slug: "google-ads",
@@ -63,6 +66,7 @@ const growthServices: Service[] = [
     description: "Technical SEO, content strategy, local search, and authority-building tied to qualified leads—not vanity metrics. AEO (Answer Engine Optimization) and GEO (Generative Engine Optimization) make your expertise easy for AI systems like ChatGPT, Gemini, Perplexity, and AI Overviews to discover, interpret, and cite. AEO/GEO complement traditional SEO — they do not replace it.",
     deliverables: ["Technical & local SEO", "Content architecture", "Entity & topic coverage", "Answer-ready content", "Structured data & citations", "Measurement & iteration"],
     featured: true,
+    detailPath: "/services/seo",
   },
   {
     slug: "campaign-landing-pages",

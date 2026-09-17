@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Service } from "@/lib/content/services";
 
 export function ServiceRow({ service, index, compact = false }: { service: Service; index: number; compact?: boolean }) {
@@ -10,6 +11,13 @@ export function ServiceRow({ service, index, compact = false }: { service: Servi
         {!compact && service.bestFor && (
           <p className="service-best-for">
             <strong>Best for:</strong> {service.bestFor}
+          </p>
+        )}
+        {service.detailPath && (
+          <p style={{ marginTop: 12 }}>
+            <Link className="text-link" href={service.detailPath}>
+              Learn more about {service.title} <span aria-hidden="true">↗</span>
+            </Link>
           </p>
         )}
       </div>

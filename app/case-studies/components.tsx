@@ -201,7 +201,7 @@ export function ServicesInvolved({ services }: { services: CaseStudy["services"]
         <article className="service-row" key={service.title}>
           <span className="service-number">{String(index + 1).padStart(2, "0")}</span>
           <div className="service-main">
-            <h3>{service.title}</h3>
+            <h3>{service.href ? <Link href={service.href}>{service.title}</Link> : service.title}</h3>
             <p>{service.body}</p>
           </div>
         </article>
