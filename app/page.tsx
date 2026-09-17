@@ -56,12 +56,28 @@ export default function Home() {
       </section>
 
       <section className="proof-band" aria-label="System Groove difference">
-        <div className="shell proof-grid">
-          <p className="kicker">Connected from day one</p>
-          <div>
-            <p className="proof-statement">Different moving parts.<br /><em>One clear direction.</em></p>
-            <p className="proof-description">Your ads, website, search presence, and follow-up should strengthen each other. We bring them together around what your business needs next.</p>
-            <div className="proof-note"><span className="proof-line" /> Strategy by System Groove. Product and engineering backed by ALCA Software.</div>
+        <div className="shell">
+          <div className="proof-panel">
+            <div className="proof-copy">
+              <p className="kicker">Connected from day one</p>
+              <p className="proof-statement">Different moving parts.<br /><em>One clear direction.</em></p>
+              <p className="proof-description">Your ads, website, search presence, and follow-up should strengthen each other. We bring them together around what your business needs next.</p>
+              <div className="proof-note"><span className="proof-line" /> Strategy by System Groove. Product and engineering backed by ALCA Software.</div>
+            </div>
+            <div className="proof-flow" aria-hidden="true">
+              <ol className="proof-parts">
+                <li><span>01</span>Ads</li>
+                <li><span>02</span>Website</li>
+                <li><span>03</span>Search presence</li>
+                <li><span>04</span>Follow-up</li>
+              </ol>
+              <div className="proof-join" />
+              <div className="proof-direction">
+                <span className="proof-direction-mark">✳</span>
+                <span className="proof-direction-label">One direction</span>
+                <strong>What your business needs next.</strong>
+              </div>
+            </div>
           </div>
         </div>
       </section>
